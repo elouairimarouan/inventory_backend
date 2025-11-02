@@ -13,7 +13,6 @@ app.use(express.json());
 
 createSuperAdmin();
 
-
 app.use('/api/auth', authRoutes);
 app.get('/test', (req, res) => {
     console.log('✅ Test route hit');

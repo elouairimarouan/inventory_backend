@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     required:true,
     default:'employe'
   },
+  is_active:{
+    type: Boolean,
+    default: true
+  },
   profile_image:{
     type :String,
     default: 'https://res.cloudinary.com/demo/image/upload/v1700000000/default-avatar.png'

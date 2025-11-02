@@ -74,4 +74,25 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+
+// 👇 New route: Get current logged-in user
+// @desc    Get current logged in user
+// @route   GET /api/auth/me
+// @access  Private
+const getMe = async (req, res) => {
+  try {
+    // req.user comes from verifyToken middleware
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (err) {
+    console.error("GetMe error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+module.exports = { register, login,getMe };
