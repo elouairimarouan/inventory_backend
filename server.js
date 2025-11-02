@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require("./routes/userRoutes");
 const createSuperAdmin = require('./utils/createSuperAdmin');
 
 
@@ -13,11 +14,13 @@ app.use(express.json());
 
 createSuperAdmin();
 
-app.use('/api/auth', authRoutes);
 app.get('/test', (req, res) => {
-    console.log('✅ Test route hit');
-    res.send('Test route works!');
-  });
+  console.log('✅ Test route hit');
+  res.send('Test route works!');
+});
+app.use('/api/auth', authRoutes);
+app.use("/api/users", userRoutes);
+
 
 const PORT = process.env.PORT || 50001;
 app.listen(PORT, () => {
