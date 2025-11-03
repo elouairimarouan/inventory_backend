@@ -3,34 +3,55 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
-//  Register just for super admin
 const register = async (req, res) => {
   try {
     const { first_name, last_name, email, password, verif_password, role } = req.body;
 
+    // 1️⃣ Validate required fields
     if (!first_name || !last_name || !email || !password || !verif_password)
       return res.status(400).json({ message: "All fields are required" });
 
     if (password !== verif_password)
       return res.status(400).json({ message: "Passwords do not match" });
 
+    // 2️⃣ Check if email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "Email already exists" });
 
+    // 3️⃣ Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    // 4️⃣ Prepare user data
+    const userData = {
       first_name,
       last_name,
       email,
       password: hashedPassword,
-      role: role || 'employe',
-    });
+      role: role || "employe",
+    };
 
+    // 5️⃣ Handle profile image upload (req.file from Multer)
+    if (req.file) {
+      userData.profile_image = req.file.path; // Cloudinary URL
+      userData.profile_image_public_id = req.file.filename; // Cloudinary public_id
+    }
+
+    // 6️⃣ Save user
+    const user = new User(userData);
     await user.save();
-    res.status(201).json({ message: 'User created successfully' });
 
+    // 7️⃣ Send response
+    res.status(201).json({
+      message: "User created successfully",
+      user: {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        role: user.role,
+        profile_image: user.profile_image || null,
+      },
+    });
   } catch (err) {
     console.error("Register error:", err);
     res.status(500).json({ message: "Server error", error: err.message });

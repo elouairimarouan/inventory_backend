@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   },
   profile_image:{
     type :String,
-    default: 'https://res.cloudinary.com/demo/image/upload/v1700000000/default-avatar.png'
+    default: 'https://res.cloudinary.com/dvq9wue5g/image/upload/v1762185483/inventory/e9llidhok5s8fpn954sk.jpg'
   }
 }, { timestamps: true });
 

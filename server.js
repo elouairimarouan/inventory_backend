@@ -10,14 +10,13 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 createSuperAdmin();
 
-app.get('/test', (req, res) => {
-  console.log('✅ Test route hit');
-  res.send('Test route works!');
-});
 app.use('/api/auth', authRoutes);
 app.use("/api/users", userRoutes);
 
