@@ -9,6 +9,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+cloudinary.api.resources({ max_results: 1 }, (error, result) => {
+  if (error) {
+    console.error("Cloudinary connection error:", error);
+  } else {
+    console.log("Cloudinary connected successfully!");
+    console.log(result);
+  }
+});
+
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
