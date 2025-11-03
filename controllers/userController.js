@@ -21,7 +21,7 @@ const getAllUsers = async (req, res) => {
 const updateUser = async(req,res) =>{
     try{
         const user = await User.findById(req.params.id);
-        if(!user) return res.status(404).json({message:'User not find'});
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
         const { first_name, last_name, email, password, role ,profile_image } = req.body;
 
@@ -29,7 +29,6 @@ const updateUser = async(req,res) =>{
         user.last_name = last_name || user.last_name;
         user.email = email || user.email;
         user.role = role || user.role;
-        user.profile_image = profile_image || user.profile_image;
 
         if (req.file && req.file.path) {
             user.profile_image = req.file.path; // Cloudinary URL
