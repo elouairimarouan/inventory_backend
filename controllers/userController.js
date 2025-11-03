@@ -41,6 +41,10 @@ const updateUser = async(req,res) =>{
             user.password = await bcrypt.hash(password, 10);
           }
 
+          console.log("req.params.id:", req.params.id);
+console.log("req.body:", req.body);
+console.log("req.file:", req.file);
+
         await user.save();
         const { password: pw, ...userWithoutPassword } = user.toObject();
 
