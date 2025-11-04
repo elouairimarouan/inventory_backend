@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require('../models/User');
 const bcrypt = require("bcryptjs");
 const { getPublicIdFromUrl } = require("../utils/publicIdCloudinary");
 const cloudinary = require("cloudinary").v2;

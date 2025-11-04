@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require("./routes/userRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 const createSuperAdmin = require('./utils/createSuperAdmin');
 
 
@@ -19,6 +20,7 @@ createSuperAdmin();
 
 app.use('/api/auth', authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/categorys", categoryRoutes);
 
 
 const PORT = process.env.PORT || 50001;
