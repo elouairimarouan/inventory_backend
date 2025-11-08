@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const itemschema = new mongoose.Schema({
     name : { type:String,  required:true , unique:true,},
     sku : {type:String ,unique :true, index:true},
+    uom: { type: String, default: "pcs" },
+    is_batch_tracked: { type: Boolean, default: false },
     quantity:{type: Number, default:0},
     min_quantity: { type: Number, default: 0 },
     price: {type: Number},
@@ -15,4 +17,4 @@ const itemschema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Item',itemschema)
+module.exports = mongoose.model('Product',itemschema)

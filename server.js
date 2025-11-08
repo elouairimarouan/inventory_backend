@@ -20,7 +20,7 @@ createSuperAdmin();
 
 app.use('/api/auth', authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/categorys", categoryRoutes);
+app.use("/api/categories", categoryRoutes);
 
 
 const PORT = process.env.PORT || 50001;
