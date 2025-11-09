@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require("bcryptjs");
 const { getPublicIdFromUrl } = require("../utils/publicIdCloudinary");
+const paginate = require('../utils/paginate');
+const { DEFAULT_PAGE, DEFAULT_LIMIT } = require('../config/pagination');
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
@@ -16,11 +18,25 @@ cloudinary.config({
 // Get all users
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
-    res.status(200).json({
-      success: true,
-      data: users,
+    const { search = '', page, limit } = req.query;
+
+    const query = search
+      ? { 
+          $or: [
+            { first_name: { $regex: search, $options: 'i' } },
+            { last_name: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } }
+          ]
+        }
+      : {};
+
+    const result = await paginate(User, query, { 
+      page: page || DEFAULT_PAGE, 
+      limit: limit || DEFAULT_LIMIT 
     });
+
+    res.status(200).json(result);
+
   } catch (error) {
     console.error("Get all users error:", error);
     res.status(500).json({
@@ -31,7 +47,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// Update user
 // Update user
 const updateUser = async (req, res) => {
   try {
@@ -128,6 +143,7 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
+
 
 const logout = (req, res) => {
   try {
