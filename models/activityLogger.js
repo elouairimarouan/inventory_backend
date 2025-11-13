@@ -7,6 +7,10 @@ const activityLoggerSchema = new mongoose.Schema({
       ref: "User",
       required: false, 
     },
+    fullName: {
+        type: String,
+        required: false
+    },
     action :{
         type: String,
         required: true,

@@ -1,6 +1,6 @@
 const ActivityLogger = require('../models/activityLogger');
 
-const logActivity = async ({ action, entity, entityId, ipAddress, userId, oldData = {}, newData = {} }) => {
+const logActivity = async ({ action, entity, entityId, ipAddress, userId,fullName, oldData = {}, newData = {} }) => {
   try {
     if (!userId || !action || !entity) {
       console.warn('Missing required log fields:', { userId, action, entity });
@@ -39,6 +39,7 @@ const logActivity = async ({ action, entity, entityId, ipAddress, userId, oldDat
 
     const log = await ActivityLogger.create({
       userId,
+      fullName,
       action,
       entity,
       entityId,

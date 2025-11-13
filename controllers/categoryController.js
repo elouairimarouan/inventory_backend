@@ -15,6 +15,8 @@ const createCategory = async (req, res)=>{
         if(existingCategory) return res.status(400).json({success:false, message: 'category already exists'})
 
          const category = await Category.create({ name, description });
+
+       
         await logActivity({
                userId: req.user?.id,
                action: "CREATE",
@@ -22,7 +24,10 @@ const createCategory = async (req, res)=>{
                entityId: category._id,
                newData: { name , description},     
                ipAddress: req.ip,
+               fullName: `${req.user?.first_name || ''} ${req.user?.last_name || ''}`.trim()
              });
+
+        console.log(logActivity);
 
         res.status(201).json({success:true, category});
 
@@ -49,6 +54,7 @@ const deleteCategory = async (req, res) => {
     // 🧾 Log the delete action
     await logActivity({
       userId: req.user?.id,
+      fullName: `${req.user?.first_name || ''} ${req.user?.last_name || ''}`.trim(),
       action: 'DELETE',
       entity: 'Category',
       entityId: category._id,
